@@ -9,3 +9,7 @@
 [REST-assured Usage](https://github.com/rest-assured/rest-assured/wiki/Usage)
 
 [WireMock Documentation](http://wiremock.org/docs/)
+
+Video: [Chill Out and REST Assured. Speaker: Johan Haleby](https://www.youtube.com/watch?v=34I22CUxkUc)
+
+Video: [Do you REST Assured?](https://www.youtube.com/watch?v=3JBz4NjYYKY)
