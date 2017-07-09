@@ -9,8 +9,10 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.get;
 import org.junit.*;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.lessThan;
 
@@ -37,6 +39,16 @@ public class RestAssuredJsonWithWiremock {
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"books\":[{\"price\":2,\"title\":\"$2 Title\"},{\"price\":1,\"title\":\"One Dollar Title\"},{\"price\":3,\"title\":\"3 Dollar Title\"}]}")));
+		
+		stubFor(get(urlEqualTo("/msg")).willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "application/json")
+                .withBody("{\"message\":\"running\"}")));
+
+		stubFor(post(urlEqualTo("/msg"))
+				.withHeader("Content-Type", containing("json"))
+				.willReturn(aResponse()
+				.withStatus(204)));
 	}
 
 	@Test
@@ -98,10 +110,30 @@ public class RestAssuredJsonWithWiremock {
 		    get("/books").
 		then().
 		    statusCode(200).
+		    body("books.price", hasItems(1, 2, 3)).
+		    body("books.price[0]", equalTo(2)).
+		    body("books.size()", is(3)).
 		    body("books.price.collect { it }.sum()", lessThan(10)).
 		    // *. Groovy spread operator - calling the action on each item and collecting the result into a list
 		    body("books.title*.length().sum()", lessThan(40)).
 		    body("books.findAll { it.price > 2 }.title", hasItems("3 Dollar Title"));
+	}
+	
+	@Test
+	public void testObjectResponse() {
+		Message msg = get("/msg").as(Message.class);
+		Assert.assertEquals("running", msg.getMessage());
+	}
+
+	@Test
+	public void testObjectRequest() {
+		given().
+            header("Content-Type", "application/json").
+            body(new Message("requesting")).
+        when().
+            post("/msg").
+        then().
+            statusCode(204);
 	}
 	
     @AfterClass
