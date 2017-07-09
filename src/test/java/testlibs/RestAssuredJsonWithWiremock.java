@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
@@ -15,6 +16,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.lessThan;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RestAssuredJsonWithWiremock {
 
@@ -72,13 +76,20 @@ public class RestAssuredJsonWithWiremock {
 		
 		given().
 		    // param("name", "value").
+		    // param("name", "value1", "value2").
+		    // param("name").
+		    // formParam("name", "value").
+		    // queryParam("name", "value").
 		    // header("TestId", "testExamplePathParam").
 		    // pathParam("id", 2).
 		    spec(spec).
 		when().
 		    get("/demo/{id}").
+		    // get("/demo/{id}", 2).
 		then().
+		    time(lessThan(300L)). // ms
 		    statusCode(200).
+		    header("Content-Type", equalTo(ContentType.JSON.toString())).
 		    body("title", equalTo("Wise Blood"));
 	}
 
@@ -128,12 +139,41 @@ public class RestAssuredJsonWithWiremock {
 	@Test
 	public void testObjectRequest() {
 		given().
-            header("Content-Type", "application/json").
-            body(new Message("requesting")).
+		    contentType(ContentType.JSON).
+            // body(new Message("requesting")).
+            body(new Message().setMessage("requesting")).
         when().
             post("/msg").
         then().
             statusCode(204);
+	}
+
+	@Test
+	public void testHashMapRequest() {
+		Map<String, Object> jsonAsMap = new HashMap<>();
+		jsonAsMap.put("message", "requesting");
+		
+		given().
+		    contentType(ContentType.JSON).
+            // body(new Message("requesting")).
+            body(jsonAsMap).
+        when().
+            post("/msg").
+        then().
+            statusCode(204);
+	}
+	
+	@Test
+	public void testLogRequestResponse() {
+		given().
+		    // log().all().
+            log().ifValidationFails().
+		when().
+		    get("/idontexist").
+		then().
+		    // log().all().
+            log().ifValidationFails().
+		    statusCode(200);
 	}
 	
     @AfterClass
