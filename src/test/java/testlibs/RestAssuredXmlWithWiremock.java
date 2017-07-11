@@ -16,48 +16,48 @@ public class RestAssuredXmlWithWiremock {
 	@BeforeClass
 	public static void setupServer() {
 		mockServer = new WireMockServer();
-        mockServer.start();
-		
+		mockServer.start();
+
 		// stateful
 		stubFor(get(urlEqualTo("/login"))
 				.inScenario("login")
 				.whenScenarioStateIs(Scenario.STARTED)
 				.willSetStateTo("loggedIn")
 				.willReturn(aResponse()
-				    .withStatus(200)
-				    .withHeader("Content-Type", "application/xml")
-				    .withBody("<message>login successful</message>")));
-		
+					.withStatus(200)
+					.withHeader("Content-Type", "application/xml")
+					.withBody("<message>login successful</message>")));
+
 		stubFor(get(urlEqualTo("/login"))
 				.inScenario("login")
 				.whenScenarioStateIs("loggedIn")
 				.willSetStateTo("loggedIn")
 				.willReturn(aResponse()
-				    .withStatus(200)
-				    .withHeader("Content-Type", "application/xml")
-				    .withBody("<message>already logged in</message>")));
+					.withStatus(200)
+					.withHeader("Content-Type", "application/xml")
+					.withBody("<message>already logged in</message>")));
 	}
-	
+
 	@Test
 	public void testLogin() {
 		given().
 		when().
-		    get("/login").
+			get("/login").
 		then().
-		    statusCode(200).
-		    body("message", equalTo("login successful"));
-		
+			statusCode(200).
+			body("message", equalTo("login successful"));
+
 		given().
 		when().
-		    get("/login").
+			get("/login").
 		then().
-		    statusCode(200).
-		    body("message", equalTo("already logged in"));		
+			statusCode(200).
+			body("message", equalTo("already logged in"));		
 	}
-	
-    @AfterClass
-    public static void tearDown(){
-        mockServer.stop();
-    }
-	
+
+	@AfterClass
+	public static void tearDown(){
+		mockServer.stop();
+	}
+
 }

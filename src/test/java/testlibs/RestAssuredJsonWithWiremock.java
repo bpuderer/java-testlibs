@@ -27,8 +27,8 @@ public class RestAssuredJsonWithWiremock {
 	@BeforeClass
 	public static void setupServer() {
 		mockServer = new WireMockServer();
-        mockServer.start();
-        
+		mockServer.start();
+
 		stubFor(get(urlEqualTo("/demo")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
@@ -38,16 +38,16 @@ public class RestAssuredJsonWithWiremock {
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"identifier\":{\"ISBN-10\":\"0374530637\"},\"title\":\"Wise Blood\",\"nextBook\":3}")));
-		
+
 		stubFor(get(urlEqualTo("/books")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"books\":[{\"price\":2,\"title\":\"$2 Title\"},{\"price\":1,\"title\":\"One Dollar Title\"},{\"price\":3,\"title\":\"3 Dollar Title\"}]}")));
-		
+
 		stubFor(get(urlEqualTo("/msg")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
-                .withBody("{\"message\":\"running\"}")));
+				.withBody("{\"message\":\"running\"}")));
 
 		stubFor(post(urlEqualTo("/msg"))
 				.withHeader("Content-Type", containing("json"))
@@ -62,35 +62,35 @@ public class RestAssuredJsonWithWiremock {
 		ResponseSpecification spec = new ResponseSpecBuilder().expectStatusCode(200)
 				.expectBody("identifier.ISBN-10", equalTo("0374530874"))
 				.expectBody("title", equalTo("The Violent Bear It Away")).build();
-		
+
 		given().
 		when().
-		    get("/demo").
+			get("/demo").
 		then().
-		    spec(spec);
+			spec(spec);
 	}
 
 	@Test
 	public void testExamplePathParam() {
 		RequestSpecification spec = new RequestSpecBuilder().addPathParam("id", 2).build(); 
-		
+
 		given().
-		    // param("name", "value").
-		    // param("name", "value1", "value2").
-		    // param("name").
-		    // formParam("name", "value").
-		    // queryParam("name", "value").
-		    // header("TestId", "testExamplePathParam").
-		    // pathParam("id", 2).
-		    spec(spec).
+			// param("name", "value").
+			// param("name", "value1", "value2").
+			// param("name").
+			// formParam("name", "value").
+			// queryParam("name", "value").
+			// header("TestId", "testExamplePathParam").
+			// pathParam("id", 2).
+			spec(spec).
 		when().
-		    get("/demo/{id}").
-		    // get("/demo/{id}", 2).
+			get("/demo/{id}").
+			// get("/demo/{id}", 2).
 		then().
-		    time(lessThan(300L)). // ms
-		    statusCode(200).
-		    header("Content-Type", equalTo(ContentType.JSON.toString())).
-		    body("title", equalTo("Wise Blood"));
+			time(lessThan(300L)). // ms
+			statusCode(200).
+			header("Content-Type", equalTo(ContentType.JSON.toString())).
+			body("title", equalTo("Wise Blood"));
 	}
 
 	@Test
@@ -98,38 +98,38 @@ public class RestAssuredJsonWithWiremock {
 		int nextBookId = 
 		given().
 		when().
-		    get("/demo").
+			get("/demo").
 		then().
-		    statusCode(200).
+			statusCode(200).
 		extract().
-		    path("nextBook");
-		
+			path("nextBook");
+
 		given().
-	        pathParam("id", nextBookId).
-        when().
-            get("/demo/{id}").
-        then().
-            statusCode(200).
-            body("title", equalTo("Wise Blood"));
+			pathParam("id", nextBookId).
+		when().
+			get("/demo/{id}").
+		then().
+			statusCode(200).
+			body("title", equalTo("Wise Blood"));
 	}
-	
+
 	@Test
 	public void testWithGroovyCollectionClosure() {
 		// http://docs.groovy-lang.org/latest/html/groovy-jdk/java/util/Collection.html
 		given().
 		when().
-		    get("/books").
+			get("/books").
 		then().
-		    statusCode(200).
-		    body("books.price", hasItems(1, 2, 3)).
-		    body("books.price[0]", equalTo(2)).
-		    body("books.size()", is(3)).
-		    body("books.price.collect { it }.sum()", lessThan(10)).
-		    // *. Groovy spread operator - calling the action on each item and collecting the result into a list
-		    body("books.title*.length().sum()", lessThan(40)).
-		    body("books.findAll { it.price > 2 }.title", hasItems("3 Dollar Title"));
+			statusCode(200).
+			body("books.price", hasItems(1, 2, 3)).
+			body("books.price[0]", equalTo(2)).
+			body("books.size()", is(3)).
+			body("books.price.collect { it }.sum()", lessThan(10)).
+			// *. Groovy spread operator - calling the action on each item and collecting the result into a list
+			body("books.title*.length().sum()", lessThan(40)).
+			body("books.findAll { it.price > 2 }.title", hasItems("3 Dollar Title"));
 	}
-	
+
 	@Test
 	public void testObjectResponse() {
 		Message msg = get("/msg").as(Message.class);
@@ -139,46 +139,46 @@ public class RestAssuredJsonWithWiremock {
 	@Test
 	public void testObjectRequest() {
 		given().
-		    contentType(ContentType.JSON).
-            // body(new Message("requesting")).
-            body(new Message().setMessage("requesting")).
-        when().
-            post("/msg").
-        then().
-            statusCode(204);
+			contentType(ContentType.JSON).
+			// body(new Message("requesting")).
+			body(new Message().setMessage("requesting")).
+		when().
+			post("/msg").
+		then().
+			statusCode(204);
 	}
 
 	@Test
 	public void testHashMapRequest() {
 		Map<String, Object> jsonAsMap = new HashMap<>();
 		jsonAsMap.put("message", "requesting");
-		
+
 		given().
-		    contentType(ContentType.JSON).
-            // body(new Message("requesting")).
-            body(jsonAsMap).
-        when().
-            post("/msg").
-        then().
-            statusCode(204);
+			contentType(ContentType.JSON).
+			// body(new Message("requesting")).
+			body(jsonAsMap).
+		when().
+			post("/msg").
+		then().
+			statusCode(204);
 	}
-	
+
 	@Test
 	public void testLogRequestResponse() {
 		given().
-		    // log().all().
-            log().ifValidationFails().
+			// log().all().
+			log().ifValidationFails().
 		when().
-		    get("/idontexist").
+			get("/idontexist").
 		then().
-		    // log().all().
-            log().ifValidationFails().
-		    statusCode(200);
+			// log().all().
+			log().ifValidationFails().
+			statusCode(200);
 	}
-	
-    @AfterClass
-    public static void tearDown(){
-        mockServer.stop();
-    }
-	
+
+	@AfterClass
+	public static void tearDown(){
+		mockServer.stop();
+	}
+
 }
