@@ -53,6 +53,11 @@ public class RestAssuredJsonWithWiremock {
 				.withHeader("Content-Type", containing("json"))
 				.willReturn(aResponse()
 				.withStatus(204)));
+		
+		stubFor(get(urlEqualTo("/anonymous")).willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "application/json")
+				.withBody("[1, 2]")));
 	}
 
 	@Test
@@ -173,6 +178,16 @@ public class RestAssuredJsonWithWiremock {
 		then().
 			// log().all().
 			log().ifValidationFails().
+			statusCode(200);
+	}
+
+	@Test
+	public void testAnonymousRoot() {
+		given().
+		when().
+			get("/anonymous").
+		then().
+			body("$", hasItems(1, 2)).
 			statusCode(200);
 	}
 
