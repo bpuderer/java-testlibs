@@ -13,3 +13,5 @@
 Video: [Chill Out and REST Assured. Speaker: Johan Haleby](https://www.youtube.com/watch?v=34I22CUxkUc)
 
 Video: [Do you REST Assured?](https://www.youtube.com/watch?v=3JBz4NjYYKY)
+
+[Testing REST APIs with REST Assured](https://developers.redhat.com/blog/2017/07/20/testing-rest-apis-with-rest-assured/)
