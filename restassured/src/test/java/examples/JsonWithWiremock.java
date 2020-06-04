@@ -1,8 +1,10 @@
-package testlibs;
+package examples;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
+import dataentities.Message;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
@@ -20,7 +22,7 @@ import static org.hamcrest.Matchers.lessThan;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestAssuredJsonWithWiremock {
+public class JsonWithWiremock {
 
 	private static WireMockServer mockServer;
 
@@ -29,22 +31,28 @@ public class RestAssuredJsonWithWiremock {
 		mockServer = new WireMockServer();
 		mockServer.start();
 
-		stubFor(get(urlEqualTo("/demo")).willReturn(aResponse()
+		stubFor(WireMock.get(urlEqualTo("/employees")).
+				willReturn(aResponse().
+						withStatus(200).
+						withBodyFile("employees.xml").
+						withHeader("Content-Type", "application/xml")));
+
+		stubFor(WireMock.get(urlEqualTo("/demo")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"identifier\":{\"ISBN-10\":\"0374530874\"},\"title\":\"The Violent Bear It Away\",\"nextBook\":2}")));
 
-		stubFor(get(urlEqualTo("/demo/2")).willReturn(aResponse()
+		stubFor(WireMock.get(urlEqualTo("/demo/2")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"identifier\":{\"ISBN-10\":\"0374530637\"},\"title\":\"Wise Blood\",\"nextBook\":3}")));
 
-		stubFor(get(urlEqualTo("/books")).willReturn(aResponse()
+		stubFor(WireMock.get(urlEqualTo("/books")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"books\":[{\"price\":2,\"title\":\"$2 Title\"},{\"price\":1,\"title\":\"One Dollar Title\"},{\"price\":3,\"title\":\"3 Dollar Title\"}]}")));
 
-		stubFor(get(urlEqualTo("/msg")).willReturn(aResponse()
+		stubFor(WireMock.get(urlEqualTo("/msg")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("{\"message\":\"running\"}")));
@@ -54,11 +62,11 @@ public class RestAssuredJsonWithWiremock {
 				.willReturn(aResponse()
 				.withStatus(204)));
 		
-		stubFor(get(urlEqualTo("/anonymous")).willReturn(aResponse()
+		stubFor(WireMock.get(urlEqualTo("/anonymous")).willReturn(aResponse()
 				.withStatus(200)
 				.withHeader("Content-Type", "application/json")
 				.withBody("[1, 2]")));
-	}
+ 	}
 
 	@Test
 	public void testExampleStatusCodeResponse() {

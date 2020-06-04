@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/employee",
+    "queryParameters": {
+      "format": {
+        "equalTo": "xml"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {"Content-Type": "application/xml"},
+    "bodyFileName": "employee.xml"
+  }
+}

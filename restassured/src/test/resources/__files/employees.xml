@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<employeeInfo>
+    <employee id="123">
+        <name almaMater="Downing College">John Cleese</name>
+        <sketch>The Ministry of Silly Walks</sketch>
+        <country>England</country>
+    </employee>
+    <employee id="456">
+        <name>Eric Idle</name>
+        <sketch>Nudge Nudge</sketch>
+        <country>England</country>
+    </employee>
+    <employee id="789">
+        <name almaMater="University of Oxford">Michael Palin</name>
+        <sketch>The Fish Slapping Dance</sketch>
+        <country>England</country>
+    </employee>
+    <employee>
+        <name almaMater="Occidental College">Terry Gilliam</name>
+        <country>United States</country>
+    </employee>
+</employeeInfo>

@@ -1,4 +1,4 @@
-package testlibs;
+package dataentities;
 
 public class Message {
 

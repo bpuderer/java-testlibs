@@ -1,0 +1,16 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/employee",
+    "queryParameters": {
+      "format": {
+        "equalTo": "json"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {"Content-Type": "application/json"},
+    "bodyFileName": "employee.json"
+  }
+}

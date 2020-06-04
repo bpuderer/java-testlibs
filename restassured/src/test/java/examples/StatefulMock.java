@@ -1,4 +1,4 @@
-package testlibs;
+package examples;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -9,7 +9,7 @@ import org.junit.*;
 import static org.hamcrest.Matchers.equalTo;
 
 
-public class RestAssuredXmlWithWiremock {
+public class StatefulMock {
 
 	private static WireMockServer mockServer;
 
