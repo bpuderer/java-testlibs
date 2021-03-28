@@ -1,10 +1,12 @@
 # java-testlibs
 
-[Hamcrest Javadoc](http://hamcrest.org/JavaHamcrest/javadoc/1.3/)
+[Hamcrest 2.2 Javadoc](http://hamcrest.org/JavaHamcrest/javadoc/2.2/)
 
-[JUnit Javadoc](http://junit.org/junit4/javadoc/latest/)
+[JUnit 5 Javadoc](https://junit.org/junit5/docs/current/api/)
 
-[REST-assured Javadoc](http://www.javadoc.io/doc/io.rest-assured/rest-assured/3.0.2)
+[JUnit 4 Javadoc](http://junit.org/junit4/javadoc/latest/)
+
+[REST-assured Javadoc](https://www.javadoc.io/doc/io.rest-assured/rest-assured/latest/index.html)
 
 [REST-assured Usage](https://github.com/rest-assured/rest-assured/wiki/Usage)
 
