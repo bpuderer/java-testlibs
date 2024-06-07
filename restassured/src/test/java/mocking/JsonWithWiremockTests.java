@@ -1,4 +1,4 @@
-package examples;
+package mocking;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -22,7 +22,7 @@ import static org.hamcrest.Matchers.lessThan;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonWithWiremock {
+public class JsonWithWiremockTests {
 
 	private static WireMockServer mockServer;
 

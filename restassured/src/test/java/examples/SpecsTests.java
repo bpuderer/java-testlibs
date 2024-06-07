@@ -6,15 +6,14 @@ import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
 
-public class Specs {
+
+public class SpecsTests {
 
     private static RequestSpecification requestSpec;
     private static ResponseSpecification responseSpec;
@@ -49,7 +48,6 @@ public class Specs {
 
     @Test
     public void requestUsZipCode90210_extractPlaceName() {
-
         String placeName =
         given().
                 spec(requestSpec).
@@ -60,6 +58,6 @@ public class Specs {
                 path("places[0].'place name'");
 
         Assert.assertEquals("Beverly Hills", placeName);
-        //todo extract multiple values
+        //TODO extract multiple values
     }
 }

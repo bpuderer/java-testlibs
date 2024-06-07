@@ -1,15 +1,14 @@
-package examples;
+package mocking;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 
-public class BasicWithMocking {
+public class BasicWithMockingTests {
 
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8089);

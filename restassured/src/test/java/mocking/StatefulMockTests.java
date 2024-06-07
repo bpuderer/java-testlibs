@@ -1,4 +1,4 @@
-package examples;
+package mocking;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -9,7 +9,7 @@ import org.junit.*;
 import static org.hamcrest.Matchers.equalTo;
 
 
-public class StatefulMock {
+public class StatefulMockTests {
 
 	private static WireMockServer mockServer;
 
